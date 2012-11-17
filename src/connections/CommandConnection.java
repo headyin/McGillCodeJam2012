@@ -49,9 +49,17 @@ public class CommandConnection {
         int price = 0;
         try {
             dataToServer.writeBytes(command + "\n");
-            float floatingPrice = dataFromServer.readFloat();
-            price = Math.round(floatingPrice * 1000);
-            //dataToServer.flush();
+            int c = dataFromServer.read();
+            while (c != '.') {
+                price = price * 10 + c - '0';
+                c = dataFromServer.read();
+            }
+            c = dataFromServer.read();
+            price = price * 10 + c - '0';
+            c = dataFromServer.read();
+            price = price * 10 + c - '0';
+            c = dataFromServer.read();
+            price = price * 10 + c - '0';
         } catch (IOException sendingFail) {
             System.out.println("Failed to send data to server");
         }

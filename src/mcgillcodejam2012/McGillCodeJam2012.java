@@ -5,7 +5,7 @@
 package mcgillcodejam2012;
 import connections.CommandConnection;
 import connections.PriceConnection;
-import data.PriceHandler;
+import handler.PriceHandler;
 
 /**
  *
@@ -20,7 +20,7 @@ public class McGillCodeJam2012 {
 
         PriceConnection priceConnection = new PriceConnection("localhost", 4000);
         CommandConnection commandConnection = new CommandConnection("localhost", 4001);
-        PriceHandler priceHandler = new PriceHandler(priceConnection);
+        PriceHandler priceHandler = new PriceHandler(priceConnection, commandConnection);
         new Thread(priceHandler).start();
         
             

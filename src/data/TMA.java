@@ -22,7 +22,7 @@ public class TMA extends MovingAverage{
     }
 
     @Override
-    public void calcMovingAverage() {
+    public int calcMovingAverage() {
         this.currentTime = prices.getCurrentTime();
         int time = currentTime;
         long[] smaFastSum = sma.getSMAFastSum();
@@ -43,7 +43,7 @@ public class TMA extends MovingAverage{
             this.tSlowTMA[time] = getInt(smaSlowSum[time]);
             this.maSlow[time] = Math.round(this.tSlowTMA[time] * 1.0f / time);
         }
-        isCrossOver("TMA");
+        return isCrossOver();
     }
     
 }

@@ -29,7 +29,7 @@ public abstract class MovingAverage {
         this.currentTime = 0;
     }
     
-    abstract public void calcMovingAverage();
+    abstract public int calcMovingAverage();
     
     public int getFastMA(int time) {
         return maFast[time];
@@ -50,7 +50,7 @@ public abstract class MovingAverage {
     protected void printForDebug(int t, int p1, int p2, int p3) {
         System.out.println(t + ":" + p1 + ", " + p2 + ", " + p3);
     }
-    protected void isCrossOver(String strategy) {
+    protected int isCrossOver() {
         int time = currentTime;
         /*if (time < 16 && strategy.equals("TMA")) {
             System.out.print(strategy);
@@ -58,14 +58,14 @@ public abstract class MovingAverage {
         }*/
         if ((maFast[time - 1] < maSlow[time - 1]) 
                 && (maFast[time] > maSlow[time])) {
-            
+            return 1;
             //TODO: strategy sma buy
             
         } else if ((maFast[time - 1] > maSlow[time - 1]) 
                 && (maFast[time] < maSlow[time])) {
             //TODO: startegy sma sell
-
-        } 
+            return 2;
+        }  else return 0;
     }
     
 }

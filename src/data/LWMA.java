@@ -21,7 +21,7 @@ public class LWMA extends MovingAverage{
     }
 
     @Override
-    public void calcMovingAverage() {
+    public int calcMovingAverage() {
         this.currentTime = prices.getCurrentTime();
         int time = currentTime;
         long[] sumPrice = prices.getSumPrices();
@@ -42,7 +42,7 @@ public class LWMA extends MovingAverage{
             this.lwmsSlow[time] = calcLWMS(time, price, SLOW_PERIOD, lwmsSlow);
             this.maSlow[time] = Math.round(lwmsSlow[time] * 1.0f / SLOW_PERIOD_SUM);
         }
-        isCrossOver("LWMA");
+        return isCrossOver();
         
     }
     
