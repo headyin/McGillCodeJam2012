@@ -20,19 +20,19 @@ public class PriceHandler implements Runnable {
     public PriceHandler (PriceConnection priceConnection) {
         this.priceConnection = priceConnection;
         this.prices = new Prices();
-        this.sma = new SMA();
+        this.sma = new SMA(prices);
     }
 
     @Override
     public void run() {
         priceConnection.startStockExchange();
         currentTime = 0;
-        int price = priceConnection.receivePrice();
-        while (price > 0) {
+        int priceValue = priceConnection.receivePrice();
+        while (priceValue > 0) {
             currentTime++;
-            prices.addPrice(currentTime, price);
-            sma.calcSMA(currentTime, price);
-            price = priceConnection.receivePrice();
+            prices.addPrice(currentTime, priceValue);
+            sma.calcMovingAverage();
+            priceValue = priceConnection.receivePrice();
         }
     }
     
