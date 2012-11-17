@@ -18,26 +18,13 @@ import data.TMA;
  */
 public class PriceHandler implements Runnable {
     
-    private static final String[] COMMANDS = {null,"B","S"};
-    
     private PriceConnection priceConnection;
-    private Prices prices;
-    private SMA sma;
-    private LWMA lwma;
-    private EMA ema;
-    private TMA tma;
-    private int currentTime;
-    private CommandConnection commandConnection;
+    private Prices prices;    
+    private int currentTime;    
     
-    
-    public PriceHandler (PriceConnection priceConnection, CommandConnection commandConnection) {
+    public PriceHandler (PriceConnection priceConnection, Prices prices) {
         this.priceConnection = priceConnection;
-        this.prices = new Prices();
-        this.sma = new SMA(prices);
-        this.lwma = new LWMA(prices);
-        this.ema = new EMA(prices);
-        this.tma = new TMA(prices,sma);
-        this.commandConnection = commandConnection;
+        this.prices = prices;        
     }
     
     public Prices getPrices() {
@@ -47,28 +34,17 @@ public class PriceHandler implements Runnable {
     @Override
     public void run() {
         priceConnection.connect();
-        commandConnection.connect();
         priceConnection.startStockExchange();
         currentTime = 0;
         int priceValue = priceConnection.receivePrice();
         while (priceValue > 0) {
             currentTime++;
-            prices.addPrice(currentTime, priceValue);
-            sendCommand(sma.calcMovingAverage(),"SMA",sma.getCurrentTime());
-            sendCommand(lwma.calcMovingAverage(),"LWMA",sma.getCurrentTime());
-            sendCommand(ema.calcMovingAverage(),"EMA",sma.getCurrentTime());
-            sendCommand(tma.calcMovingAverage(),"TMA",sma.getCurrentTime());
+            prices.addPrice(currentTime, priceValue);            
             priceValue = priceConnection.receivePrice();
         }
+        
     }
     
-    private void sendCommand(int commandNumber,String strategy, int time) {
-        if (commandNumber != 0) {
-            int excutedPrice = commandConnection.buyOrSell(COMMANDS[commandNumber]);
-            System.out.println("Time: " + time + ", Strategy: " + strategy + 
-                    ", Sending Price: " + prices.getPrice(time) + 
-                    ", excuted price: " + excutedPrice);
-        }
-    }
+    
     
 }

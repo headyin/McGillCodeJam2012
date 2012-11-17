@@ -20,11 +20,10 @@ public class SMA extends MovingAverage{
     }
 
     @Override
-    public int calcMovingAverage() {
-        this.currentTime = prices.getCurrentTime();
-        int time = currentTime;
+    public int calcMovingAverage(int time) {
+        this.currentTime = time;
         long[] sumPrice = prices.getSumPrices();
-        int price = prices.getCurrentPrice();
+        int price = prices.getPrice(time);
         
         if (time < FAST_PERIOD) {
             maFast[time] = getInt(sumPrice[time] - sumPrice[0]);

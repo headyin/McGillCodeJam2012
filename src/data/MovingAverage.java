@@ -29,7 +29,7 @@ public abstract class MovingAverage {
         this.currentTime = 0;
     }
     
-    abstract public int calcMovingAverage();
+    abstract public int calcMovingAverage(int time);
     
     public int getFastMA(int time) {
         return maFast[time];
@@ -65,7 +65,9 @@ public abstract class MovingAverage {
                 && (maFast[time] < maSlow[time])) {
             //TODO: startegy sma sell
             return 2;
-        }  else return 0;
+        }  else {
+            return 0;
+        }
     }
     
 }

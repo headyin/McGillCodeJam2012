@@ -22,12 +22,11 @@ public class TMA extends MovingAverage{
     }
 
     @Override
-    public int calcMovingAverage() {
-        this.currentTime = prices.getCurrentTime();
-        int time = currentTime;
+    public int calcMovingAverage(int time) {
+        this.currentTime = time;
         long[] smaFastSum = sma.getSMAFastSum();
         long[] smaSlowSum = sma.getSMASlowSum();
-        int price = prices.getCurrentPrice();
+        int price = prices.getPrice(time);
         
         if (time > FAST_PERIOD) {
             this.tFastTMA[time] = getInt(smaFastSum[time] - smaFastSum[time - FAST_PERIOD]);
