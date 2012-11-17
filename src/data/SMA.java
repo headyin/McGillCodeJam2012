@@ -23,18 +23,18 @@ public class SMA extends MovingAverage{
         
         if (time < FAST_PERIOD) {
             maFast[time] = getInt(sumPrice[time] - sumPrice[0]);
-            maFast[time] = maFast[time] / time;
+            maFast[time] = Math.round(maFast[time] * 1.0f / time);
             maSlow[time] = getInt(sumPrice[time] - sumPrice[0]);
-            maSlow[time] = maSlow[time] / time;
+            maSlow[time] = Math.round(maSlow[time] * 1.0f / time);
         } else {
             maFast[time] = getInt(sumPrice[time] - sumPrice[time - FAST_PERIOD]);
-            maFast[time] = maFast[time] / FAST_PERIOD;
+            maFast[time] = Math.round(maFast[time] * 1.0f / FAST_PERIOD);
             if (time < SLOW_PERIOD) {
                 maSlow[time] = getInt(sumPrice[time] - sumPrice[0]);
-                maSlow[time] = maSlow[time] / time;
+                maSlow[time] = Math.round(maSlow[time] * 1.0f / time);
             } else {
                 maSlow[time] = getInt(sumPrice[time] - sumPrice[time - SLOW_PERIOD]);
-                maSlow[time] = maSlow[time] / SLOW_PERIOD;
+                maSlow[time] = Math.round(maSlow[time] * 1.0f / SLOW_PERIOD);
             }        }
         //printForDebug(time, price, smaFast[time], smaSlow[time]);
         isCrossOver("SMA");

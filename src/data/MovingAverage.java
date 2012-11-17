@@ -52,7 +52,10 @@ public abstract class MovingAverage {
     }
     protected int isCrossOver(String strategy) {
         int time = currentTime;
-         //printForDebug(time, price, smaFast[time], smaSlow[time]);
+        if (time < 16) {
+            System.out.print(strategy);
+            printForDebug(time, prices.getPrice(time), maFast[time], maSlow[time]);
+        }
         if ((maFast[time - 1] < maSlow[time - 1]) 
                 && (maFast[time] > maSlow[time])) {
             return 1;

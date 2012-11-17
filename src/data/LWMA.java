@@ -16,8 +16,8 @@ public class LWMA extends MovingAverage{
     
     public LWMA(Prices prices) {
         super.init(prices);
-        lwmsFast = new int[FAST_PERIOD];
-        lwmsSlow = new int[SLOW_PERIOD];
+        lwmsFast = new int[Prices.TOTAL_TIME];
+        lwmsSlow = new int[Prices.TOTAL_TIME];
     }
 
     @Override
@@ -27,20 +27,20 @@ public class LWMA extends MovingAverage{
         long[] sumPrice = prices.getSumPrices();
         int price = prices.getCurrentPrice();
         
-        if (time < FAST_PERIOD) {
+        if (time <= FAST_PERIOD) {
             this.lwmsFast[time] = calcFrontLWMS(time, price, lwmsFast);
-            this.maFast[time] = this.lwmsFast[time] / (time + 1) / time * 2;
+            this.maFast[time] = Math.round(this.lwmsFast[time] * 2.0f / (time + 1) / time);
         } else {
             this.lwmsFast[time] = calcLWMS(time, price, FAST_PERIOD, lwmsFast);
-            this.maFast[time] = this.lwmsFast[time] / FAST_PERIOD_SUM;
+            this.maFast[time] = Math.round(this.lwmsFast[time] * 1.0f / FAST_PERIOD_SUM);
         }
         
-        if (time < SLOW_PERIOD) {
+        if (time <= SLOW_PERIOD) {
             this.lwmsSlow[time] = calcFrontLWMS(time, price, lwmsSlow);
-            this.maSlow[time] = lwmsSlow[time] / time / (time + 1) * 2;
+            this.maSlow[time] = Math.round(lwmsSlow[time] * 2.0f / time / (time + 1));
         } else {
             this.lwmsSlow[time] = calcLWMS(time, price, SLOW_PERIOD, lwmsSlow);
-            this.maSlow[time] = lwmsSlow[time] / SLOW_PERIOD_SUM;
+            this.maSlow[time] = Math.round(lwmsSlow[time] * 1.0f / SLOW_PERIOD_SUM);
         }
         isCrossOver("LWMA");
         
