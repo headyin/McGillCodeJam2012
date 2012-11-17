@@ -5,10 +5,10 @@
 package mcgillcodejam2012;
 import connections.PriceConnection;
 import data.Prices;
-import handler.EMAHandler;
-import handler.LWMAHandler;
-import handler.PriceHandler;
-import handler.SMAandTMAHandler;
+import data.handler.EMAHandler;
+import data.handler.LWMAHandler;
+import data.handler.PriceHandler;
+import data.handler.SMAandTMAHandler;
 
 
 /**
