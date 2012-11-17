@@ -3,11 +3,13 @@
  * and open the template in the editor.
  */
 package mcgillcodejam2012;
-import connections.CommandConnection;
 import connections.PriceConnection;
 import data.Prices;
+import handler.EMAHandler;
+import handler.LWMAHandler;
 import handler.PriceHandler;
-import handler.StrategyHandler;
+import handler.SMAandTMAHandler;
+
 
 /**
  *
@@ -21,13 +23,20 @@ public class McGillCodeJam2012 {
     public static void main(String[] args) {
 
         PriceConnection priceConnection = new PriceConnection("localhost", 4000);
-        CommandConnection commandConnection = new CommandConnection("localhost", 4001);
         Prices prices = new Prices();
         PriceHandler priceHandler = new PriceHandler(priceConnection, prices);
-        StrategyHandler strategyHandler = new StrategyHandler(commandConnection, prices);
-        new Thread(priceHandler).start();
-        new Thread(strategyHandler).start();
+        SMAandTMAHandler STHandler = new SMAandTMAHandler("localhost", 4001, prices);
+        EMAHandler emaHandler = new EMAHandler("localhost", 4001, prices);
+        LWMAHandler lwmaHandler = new LWMAHandler("localhost", 4001, prices);
+        Thread tPriceHandler = new Thread(priceHandler);
+        Thread tSTHandler = new Thread(STHandler);
+        Thread tEmaHandler = new Thread(emaHandler);
+        Thread tLwmaHandler = new Thread(lwmaHandler);
         
+        tPriceHandler.start();
+        tSTHandler.start();
+        tEmaHandler.start();
+        tLwmaHandler.start();
             
      
     }
