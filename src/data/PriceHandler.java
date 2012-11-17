@@ -16,6 +16,8 @@ public class PriceHandler implements Runnable {
     private Prices prices;
     private SMA sma;
     private LWMA lwma;
+    private EMA ema;
+    private TMA tma;
     private int currentTime;
     
     public PriceHandler (PriceConnection priceConnection) {
@@ -23,6 +25,8 @@ public class PriceHandler implements Runnable {
         this.prices = new Prices();
         this.sma = new SMA(prices);
         this.lwma = new LWMA(prices);
+        this.ema = new EMA(prices);
+        this.tma = new TMA(prices,sma);
     }
 
     @Override
@@ -36,6 +40,8 @@ public class PriceHandler implements Runnable {
             prices.addPrice(currentTime, priceValue);
             sma.calcMovingAverage();
             lwma.calcMovingAverage();
+            ema.calcMovingAverage();
+            tma.calcMovingAverage();
             priceValue = priceConnection.receivePrice();
         }
     }

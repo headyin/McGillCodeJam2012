@@ -10,8 +10,13 @@ package data;
  */
 public class SMA extends MovingAverage{
     
+    protected long[] smaFastSum;
+    protected long[] smaSlowSum;
+    
     public SMA(Prices prices) {
         super.init(prices);
+        smaFastSum = new long[Prices.TOTAL_TIME];
+        smaSlowSum = new long[Prices.TOTAL_TIME];
     }
 
     @Override
@@ -37,7 +42,17 @@ public class SMA extends MovingAverage{
                 maSlow[time] = Math.round(maSlow[time] * 1.0f / SLOW_PERIOD);
             }        }
         //printForDebug(time, price, smaFast[time], smaSlow[time]);
+        smaFastSum[time] = smaFastSum[time - 1] + maFast[time];
+        smaSlowSum[time] = smaSlowSum[time - 1] + maSlow[time];
         isCrossOver("SMA");
+    }
+    
+    protected long[] getSMAFastSum() {
+        return this.smaFastSum;
+    }
+    
+    protected long[] getSMASlowSum() {
+        return this.smaSlowSum;
     }
     
     

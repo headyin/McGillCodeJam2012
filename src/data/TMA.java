@@ -10,13 +10,40 @@ package data;
  */
 public class TMA extends MovingAverage{
     
-    public TMA(Prices prices) {
+    private int[] tFastTMA;
+    private int[] tSlowTMA;
+    private SMA sma;
+    
+    public TMA(Prices prices,SMA sma) {
         super.init(prices);
+        tFastTMA = new int[Prices.TOTAL_TIME];
+        tSlowTMA = new int[Prices.TOTAL_TIME];
+        this.sma = sma;
     }
 
     @Override
     public void calcMovingAverage() {
+        this.currentTime = prices.getCurrentTime();
+        int time = currentTime;
+        long[] smaFastSum = sma.getSMAFastSum();
+        long[] smaSlowSum = sma.getSMASlowSum();
+        int price = prices.getCurrentPrice();
         
+        if (time > FAST_PERIOD) {
+            this.tFastTMA[time] = getInt(smaFastSum[time] - smaFastSum[time - FAST_PERIOD]);
+            this.maFast[time] = Math.round(this.tFastTMA[time] * 1.0f / FAST_PERIOD);
+        } else {
+            this.tFastTMA[time] = getInt(smaFastSum[time]);
+            this.maFast[time] = Math.round(this.tFastTMA[time] * 1.0f / time);
+        }
+        if (time > SLOW_PERIOD) {
+            this.tSlowTMA[time] = getInt(smaSlowSum[time] - smaSlowSum[time - SLOW_PERIOD]);
+            this.maSlow[time] = Math.round(this.tSlowTMA[time] * 1.0f / SLOW_PERIOD);
+        } else {
+            this.tSlowTMA[time] = getInt(smaSlowSum[time]);
+            this.maSlow[time] = Math.round(this.tSlowTMA[time] * 1.0f / time);
+        }
+        isCrossOver("TMA");
     }
     
 }

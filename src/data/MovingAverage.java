@@ -50,29 +50,22 @@ public abstract class MovingAverage {
     protected void printForDebug(int t, int p1, int p2, int p3) {
         System.out.println(t + ":" + p1 + ", " + p2 + ", " + p3);
     }
-    protected int isCrossOver(String strategy) {
+    protected void isCrossOver(String strategy) {
         int time = currentTime;
-        if (time < 16) {
+        /*if (time < 16 && strategy.equals("TMA")) {
             System.out.print(strategy);
             printForDebug(time, prices.getPrice(time), maFast[time], maSlow[time]);
-        }
+        }*/
         if ((maFast[time - 1] < maSlow[time - 1]) 
                 && (maFast[time] > maSlow[time])) {
-            return 1;
+            
             //TODO: strategy sma buy
-            /*printForDebug(time-2, price, maFast[time-2], maSlow[time-2]);
-            printForDebug(time-1, price, maFast[time-1], maSlow[time-1]);
-            printForDebug(time, price, maFast[time], maSlow[time]);
-            System.out.println(": Buy!");*/
+            
         } else if ((maFast[time - 1] > maSlow[time - 1]) 
                 && (maFast[time] < maSlow[time])) {
             //TODO: startegy sma sell
-            /*printForDebug(time-2, price, maFast[time-2], maSlow[time-2]);
-            printForDebug(time-1, price, maFast[time-1], maSlow[time-1]);
-            printForDebug(time, price, maFast[time], maSlow[time]);
-            System.out.println(": Sell");*/
-            return -1;
-        } else return 0;  
+
+        } 
     }
     
 }
