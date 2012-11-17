@@ -25,6 +25,7 @@ public class PriceHandler implements Runnable {
 
     @Override
     public void run() {
+        priceConnection.connect();
         priceConnection.startStockExchange();
         currentTime = 0;
         int priceValue = priceConnection.receivePrice();

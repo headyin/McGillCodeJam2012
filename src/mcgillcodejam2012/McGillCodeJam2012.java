@@ -18,7 +18,6 @@ public class McGillCodeJam2012 {
     public static void main(String[] args) {
 
         PriceConnection priceConnection = new PriceConnection("localhost", 4000);
-        priceConnection.connect();
         PriceHandler priceHandler = new PriceHandler(priceConnection);
         new Thread(priceHandler).start();
         

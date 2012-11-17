@@ -16,10 +16,10 @@ public class SMA extends MovingAverage{
 
     @Override
     public void calcMovingAverage() {
-         this.currentTime = prices.getCurrentTime();
+        this.currentTime = prices.getCurrentTime();
         int time = currentTime;
         long[] sumPrice = prices.getSumPrices();
-        int price = prices.getCurrentTime();
+        int price = prices.getCurrentPrice();
         
         if (time < FAST_PERIOD) {
             maFast[time] = getInt(sumPrice[time] - sumPrice[0]);
@@ -37,21 +37,9 @@ public class SMA extends MovingAverage{
                 maSlow[time] = maSlow[time] / SLOW_PERIOD;
             }        }
         //printForDebug(time, price, smaFast[time], smaSlow[time]);
-        if ((maFast[time - 1] < maSlow[time - 1]) 
-                && (maFast[time] > maSlow[time])) {
-            //TODO: strategy sma buy
-            /*printForDebug(time-2, price, maFast[time-2], maSlow[time-2]);
-            printForDebug(time-1, price, maFast[time-1], maSlow[time-1]);
-            printForDebug(time, price, maFast[time], maSlow[time]);
-            System.out.println(": Buy!");*/
-        } else if ((maFast[time - 1] > maSlow[time - 1]) 
-                && (maFast[time] < maSlow[time])) {
-            //TODO: startegy sma sell
-            /*printForDebug(time-2, price, maFast[time-2], maSlow[time-2]);
-            printForDebug(time-1, price, maFast[time-1], maSlow[time-1]);
-            printForDebug(time, price, maFast[time], maSlow[time]);
-            System.out.println(": Sell");*/
-        }       
+        isCrossOver("SMA");
     }
+    
+    
   
 }
