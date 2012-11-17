@@ -50,6 +50,9 @@ public class CommandConnection {
         try {
             dataToServer.writeBytes(command + "\n");
             int c = dataFromServer.read();
+            if (c == 'E') {
+                return -1;
+            };
             while (c != '.') {
                 price = price * 10 + c - '0';
                 c = dataFromServer.read();

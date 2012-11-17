@@ -30,10 +30,10 @@ public abstract class StrategyHandler implements Runnable{
     
     protected void sendCommand(int commandNumber,String strategy, int time) {
         if (commandNumber != 0) {
-            int excutedPrice = commandConnection.buyOrSell(COMMANDS[commandNumber]);
+            int executedPrice = commandConnection.buyOrSell(COMMANDS[commandNumber]);
             System.out.println("Time: " + time + ", Strategy: " + strategy + 
                     ", Sending Price: " + prices.getPrice(time) + 
-                    ", excuted price: " + excutedPrice);
+                    ", excuted price: " + executedPrice);
         }
     }
     

@@ -32,6 +32,7 @@ public class Prices {
         this.prices[time] = price;
         sumPrice[time] = sumPrice[time - 1] + price;
     }
+
     
     public int getCurrentTime() {
         return this.currentTime;

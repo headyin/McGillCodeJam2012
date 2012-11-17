@@ -26,14 +26,15 @@ public class LWMAHandler extends StrategyHandler{
     public void run() {
         this.commandConnection.connect();
         this.currentTime = 0;
-        while (currentTime < Prices.TOTAL_TIME) {
+        while (currentTime < Prices.TOTAL_TIME - 1) {
             if (currentTime >= prices.getCurrentTime()) {
                 continue;
             }
             currentTime++;
             sendCommand(lwma.calcMovingAverage(currentTime),"LWMA",lwma.getCurrentTime());
-       }
-        
+        }
+        System.out.println("LWMA Handler thread ends");
+
     }
     
 

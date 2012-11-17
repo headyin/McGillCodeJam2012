@@ -4,13 +4,10 @@
  */
 package handler;
 
-import connections.CommandConnection;
+
 import connections.PriceConnection;
-import data.EMA;
-import data.LWMA;
 import data.Prices;
-import data.SMA;
-import data.TMA;
+
 
 /**
  *
@@ -21,6 +18,7 @@ public class PriceHandler implements Runnable {
     private PriceConnection priceConnection;
     private Prices prices;    
     private int currentTime;    
+
     
     public PriceHandler (PriceConnection priceConnection, Prices prices) {
         this.priceConnection = priceConnection;
@@ -36,14 +34,18 @@ public class PriceHandler implements Runnable {
         priceConnection.connect();
         priceConnection.startStockExchange();
         currentTime = 0;
+
         int priceValue = priceConnection.receivePrice();
         while (priceValue > 0) {
             currentTime++;
             prices.addPrice(currentTime, priceValue);            
             priceValue = priceConnection.receivePrice();
         }
-        
+        System.out.println("Price Handler thread ends.");
+
     }
+
+    
     
     
     

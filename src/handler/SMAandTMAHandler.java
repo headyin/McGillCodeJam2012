@@ -29,14 +29,16 @@ public class SMAandTMAHandler extends StrategyHandler {
     public void run() {
         this.commandConnection.connect();
         this.currentTime = 0;
-        while (currentTime < Prices.TOTAL_TIME) {
+        while (currentTime < Prices.TOTAL_TIME - 1) {
             if (currentTime >= prices.getCurrentTime()) {
                 continue;
             }
             currentTime++;
             sendCommand(sma.calcMovingAverage(currentTime),"SMA",sma.getCurrentTime());
             sendCommand(tma.calcMovingAverage(currentTime),"TMA",tma.getCurrentTime());
+            //System.out.println("Time>> " + currentTime);
         }
+        System.out.println("ST handler ends.");
         
     }
     

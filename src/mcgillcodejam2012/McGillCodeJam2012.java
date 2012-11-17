@@ -33,11 +33,11 @@ public class McGillCodeJam2012 {
         Thread tEmaHandler = new Thread(emaHandler);
         Thread tLwmaHandler = new Thread(lwmaHandler);
         
-        tPriceHandler.start();
+        
         tSTHandler.start();
         tEmaHandler.start();
         tLwmaHandler.start();
-            
+        tPriceHandler.start();
      
     }
 }
