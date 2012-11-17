@@ -4,6 +4,7 @@
  */
 package mcgillcodejam2012;
 import connections.PriceConnection;
+import data.PriceHandler;
 import data.Prices;
 /**
  *
@@ -18,8 +19,9 @@ public class McGillCodeJam2012 {
 
         PriceConnection priceConnection = new PriceConnection("localhost", 4000);
         priceConnection.connect();
-        System.out.println("Connected to the server!");
-
+        PriceHandler priceHandler = new PriceHandler(priceConnection);
+        new Thread(priceHandler).start();
+        
             
      
     }

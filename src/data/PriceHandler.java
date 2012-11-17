@@ -14,11 +14,13 @@ public class PriceHandler implements Runnable {
     
     private PriceConnection priceConnection;
     private Prices prices;
+    private SMA sma;
     private int currentTime;
     
     public PriceHandler (PriceConnection priceConnection) {
         this.priceConnection = priceConnection;
         this.prices = new Prices();
+        this.sma = new SMA();
     }
 
     @Override
@@ -29,7 +31,7 @@ public class PriceHandler implements Runnable {
         while (price > 0) {
             currentTime++;
             prices.addPrice(currentTime, price);
-            System.out.println(currentTime + ": " + prices.getCurrentPriceString());
+            sma.calcSMA(currentTime, price);
             price = priceConnection.receivePrice();
         }
     }
