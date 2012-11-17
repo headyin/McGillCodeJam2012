@@ -5,6 +5,7 @@
 package data.handler;
 
 
+import connections.data.TransactionCollector;
 import data.Prices;
 import data.SMA;
 import data.TMA;
@@ -19,8 +20,9 @@ public class SMAandTMAHandler extends StrategyHandler {
     private TMA tma;
     private int currentTime;
     
-    public SMAandTMAHandler (String serverName, int serverPort, Prices prices) {
-        super.init(serverName, serverPort, prices);
+    public SMAandTMAHandler (String serverName, int serverPort, Prices prices,
+            TransactionCollector transactionCollector) {
+        super.init(serverName, serverPort, prices,transactionCollector);
         this.sma = new SMA(prices);
         this.tma = new TMA(prices,sma);
     }
@@ -34,8 +36,8 @@ public class SMAandTMAHandler extends StrategyHandler {
                 continue;
             }
             currentTime++;
-            sendCommand(sma.calcMovingAverage(currentTime),"SMA",sma.getCurrentTime());
-            sendCommand(tma.calcMovingAverage(currentTime),"TMA",tma.getCurrentTime());
+            sendCommand(sma.calcMovingAverage(currentTime),0,sma.getCurrentTime());
+            sendCommand(tma.calcMovingAverage(currentTime),3,tma.getCurrentTime());
             //System.out.println("Time>> " + currentTime);
         }
         System.out.println("ST handler ends.");

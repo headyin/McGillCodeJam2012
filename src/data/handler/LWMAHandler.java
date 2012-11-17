@@ -5,6 +5,7 @@
 package data.handler;
 
 
+import connections.data.TransactionCollector;
 import data.LWMA;
 import data.Prices;
 
@@ -17,8 +18,9 @@ public class LWMAHandler extends StrategyHandler{
     private LWMA lwma;
     private int currentTime;
     
-    public LWMAHandler(String serverName, int serverPort, Prices prices) {
-        super.init(serverName, serverPort, prices);
+    public LWMAHandler(String serverName, int serverPort, Prices prices,
+            TransactionCollector transactionCollector) {
+        super.init(serverName, serverPort, prices,transactionCollector);
         this.lwma = new LWMA(prices);        
      }
     
@@ -31,7 +33,7 @@ public class LWMAHandler extends StrategyHandler{
                 continue;
             }
             currentTime++;
-            sendCommand(lwma.calcMovingAverage(currentTime),"LWMA",lwma.getCurrentTime());
+            sendCommand(lwma.calcMovingAverage(currentTime),1,lwma.getCurrentTime());
         }
         System.out.println("LWMA Handler thread ends");
 

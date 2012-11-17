@@ -4,6 +4,7 @@
  */
 package data.handler;
 
+import connections.data.TransactionCollector;
 import data.EMA;
 import data.Prices;
 
@@ -15,8 +16,9 @@ public class EMAHandler extends StrategyHandler{
      private EMA ema;
      private int currentTime;
      
-     public EMAHandler(String serverName, int serverPort, Prices prices) {
-        super.init(serverName, serverPort, prices);
+     public EMAHandler(String serverName, int serverPort, Prices prices, 
+             TransactionCollector transactionCollector) {
+        super.init(serverName, serverPort, prices,transactionCollector);
         this.ema = new EMA(prices);        
      }
      
@@ -29,7 +31,7 @@ public class EMAHandler extends StrategyHandler{
                 continue;
             }
             currentTime++;
-            sendCommand(ema.calcMovingAverage(currentTime),"EMA",ema.getCurrentTime());
+            sendCommand(ema.calcMovingAverage(currentTime),2,ema.getCurrentTime());
         }
         System.out.println("EMA Handler thread ends");
         
