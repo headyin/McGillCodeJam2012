@@ -16,15 +16,24 @@ import java.util.ArrayList;
 public class TransactionCollector {
     private final static String EMAIL = "\"headyin@gmail.com\"";
     
-    private ArrayList<Transaction> transactionQueue;
+    public ArrayList<Transaction> transactionQueue;
     FileConnection fileConnection;
     
     public TransactionCollector() {
-        transactionQueue = new ArrayList<Transaction>();
+        transactionQueue = new ArrayList<>();
     }
     
     public void addTransaction(Transaction transaction) {
         this.transactionQueue.add(transaction);
+    }
+    
+    public void addTransactions(TransactionCollector tc) {
+        int i;
+        int l = tc.transactionQueue.size();
+        for (i = 0; i < l; i++) {
+            Transaction t = tc.transactionQueue.get(i);
+            this.addTransaction(t);
+        }
     }
     
     public void printTransactions() {
@@ -64,7 +73,7 @@ public class TransactionCollector {
                 bw.write("    \"price\" : " + t.getPrice() + ",\n");
                 bw.write("    \"manager\" : \"" + t.getManager() + "\",\n");
                 bw.write("    \"strategy\" : \"" + t.getStrategy() + "\",\n");
-                bw.write("    {");
+                bw.write("    }");
                 if (i != l-1) {
                     bw.write(",\n");
                 } else {

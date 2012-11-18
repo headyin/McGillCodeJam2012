@@ -6,3 +6,6 @@
 *.ear
 /build/
 /dist/
+
+#Generated Data Files #
+*.json

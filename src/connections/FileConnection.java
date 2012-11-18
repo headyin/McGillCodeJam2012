@@ -18,7 +18,7 @@ import java.io.OutputStreamWriter;
  */
 public class FileConnection {
     
-    public static final String JSON_FILE_PATH = "jsonData/codejam";
+    public static final String JSON_FILE_PATH = "codejam.json";
     
     private File jsonFile;
     private FileOutputStream fileOutputStream;
@@ -26,19 +26,15 @@ public class FileConnection {
     private BufferedWriter bufferedWriter;
     
     public FileConnection() {
-        this.jsonFile = new File(JSON_FILE_PATH);
-        if (this.jsonFile.exists()) {
-            this.jsonFile.delete();
-        }
         try {
-            this.jsonFile.createNewFile();
+            this.jsonFile = new File(JSON_FILE_PATH);
             this.fileOutputStream = new FileOutputStream(this.jsonFile);
             this.outputStreamWriter = new  
                     OutputStreamWriter(this.fileOutputStream);
             this.bufferedWriter = new 
                     BufferedWriter(this.outputStreamWriter);
         } catch (IOException e1) {
-            
+            System.out.println("failed to create file");
         }
     }
     

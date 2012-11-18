@@ -20,7 +20,10 @@ public class JFrameMain extends javax.swing.JFrame {
     
     PriceConnection priceConnection;
     Prices prices;
-    TransactionCollector transactionCollector;
+    TransactionCollector STMAtransactionCollector;
+    TransactionCollector EMAtransactionCollector;
+    TransactionCollector LWMAtransactionCollector;
+    TransactionCollector transactions;
     PriceHandler priceHandler;
     SMAandTMAHandler STHandler;
     EMAHandler emaHandler;
@@ -65,6 +68,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         Start = new javax.swing.JButton();
+        jButtonReport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Please setup server information");
@@ -96,6 +100,13 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
+        jButtonReport.setText("Report");
+        jButtonReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,26 +122,33 @@ public class JFrameMain extends javax.swing.JFrame {
                     .addComponent(jTextFieldPricePort, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                     .addComponent(jTextFieldTradePort))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(Start, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(Start, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                    .addComponent(jButtonReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(52, 52, 52))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(16, 16, 16)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldServerName, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Start, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextFieldPricePort, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTradePort))
-                .addGap(166, 166, 166))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldPricePort, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+                            .addComponent(jTextFieldTradePort))
+                        .addGap(166, 166, 166))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -143,14 +161,16 @@ public class JFrameMain extends javax.swing.JFrame {
         
         priceConnection = new PriceConnection(serverName, pricePort);
         prices = new Prices();
-        transactionCollector = new TransactionCollector();
+        STMAtransactionCollector = new TransactionCollector();
+        EMAtransactionCollector = new TransactionCollector();
+        LWMAtransactionCollector = new TransactionCollector();
         priceHandler = new PriceHandler(priceConnection, prices);
         STHandler = new SMAandTMAHandler(serverName, tradePort, 
-                prices,transactionCollector);
+                prices,STMAtransactionCollector);
         emaHandler = new EMAHandler(serverName, tradePort, 
-                prices,transactionCollector);
+                prices,EMAtransactionCollector);
         lwmaHandler = new LWMAHandler(serverName, tradePort, 
-                prices,transactionCollector);        
+                prices,LWMAtransactionCollector);        
         tPriceHandler = new Thread(priceHandler);
         tSTHandler = new Thread(STHandler);
         tEmaHandler = new Thread(emaHandler);
@@ -175,6 +195,14 @@ public class JFrameMain extends javax.swing.JFrame {
        // this.tLineChartTMA.start();
         
     }//GEN-LAST:event_StartActionPerformed
+
+    private void jButtonReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReportActionPerformed
+        this.transactions = new TransactionCollector();
+        this.transactions.addTransactions(this.STMAtransactionCollector);
+        this.transactions.addTransactions(this.EMAtransactionCollector);
+        this.transactions.addTransactions(this.LWMAtransactionCollector);
+        this.transactions.saveToFile();
+    }//GEN-LAST:event_jButtonReportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -205,6 +233,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new JFrameMain().setVisible(true);
             }
@@ -212,6 +241,7 @@ public class JFrameMain extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Start;
+    private javax.swing.JButton jButtonReport;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
