@@ -32,7 +32,8 @@ public class JFrameMain extends javax.swing.JFrame {
     String serverName;
     int pricePort;
     int tradePort;
-
+    LineChart lineChartSMA;
+    Thread tLineChartSMA;
     /**
      * Creates new form JFrameMain
      */
@@ -73,7 +74,7 @@ public class JFrameMain extends javax.swing.JFrame {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(300, 300));
 
-        jTextFieldServerName.setText("localhost");
+        jTextFieldServerName.setText("192.168.2.20");
 
         jTextFieldPricePort.setText("4000");
 
@@ -196,7 +197,8 @@ public class JFrameMain extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSaveActionPerformed
 
     private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonStartActionPerformed
-         priceConnection = new PriceConnection(serverName, pricePort);
+        
+        priceConnection = new PriceConnection(serverName, pricePort);
         prices = new Prices();
         transactionCollector = new TransactionCollector();
         priceHandler = new PriceHandler(priceConnection, prices);
@@ -210,9 +212,13 @@ public class JFrameMain extends javax.swing.JFrame {
         tSTHandler = new Thread(STHandler);
         tEmaHandler = new Thread(emaHandler);
         tLwmaHandler = new Thread(lwmaHandler);
+        lineChartSMA = new LineChart(prices);
+        tLineChartSMA = new Thread(lineChartSMA);
+        
         this.tEmaHandler.start();
         this.tLwmaHandler.start();
         this.tSTHandler.start();
+        this.tLineChartSMA.start();
         this.tPriceHandler.start();
         //System.out.println("Finish running");
     }//GEN-LAST:event_jButtonStartActionPerformed

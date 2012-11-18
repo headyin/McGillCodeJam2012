@@ -4,12 +4,11 @@
  */
 package gui;
 
+import data.Prices;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Random;
-import javax.swing.JApplet;
 import javax.swing.JFrame;
 import net.sourceforge.chart2d.*;
 
@@ -17,20 +16,29 @@ import net.sourceforge.chart2d.*;
  *
  * @author headyin
  */
-public class LineChart extends JApplet{
+public class LineChart implements Runnable{
      private JFrame frame = null;
      private static boolean isApplet = true;
+     private Dataset dataset;
+     LBChart2D chart2D;
+     Prices prices;
+     int currentTime;
      
-    @Override
+     public LineChart(Prices prices) {
+         this.prices = prices;
+         this.currentTime = 0;
+     }
+     
     public void init() {
         
-        int maxWidth = 2000;
-        int maxHeight = 300;
+        int maxWidth = 600;
+        int maxHeight = 400;
+        
         
         Dimension maxSize = new Dimension (maxWidth, maxHeight);
         System.out.println (maxSize);
         
-        Chart2D chart2D = getChart2DDemoI();
+        getChart2DDemoI();
         chart2D.setSize(maxSize);
         chart2D.setPreferredSize(maxSize);
         
@@ -51,19 +59,12 @@ public class LineChart extends JApplet{
     }
     
     
-    /**
-     * Shows the JFrame GUI.
-     */
-    @Override
     public void start() {
-        frame.setVisible(true);;
+        frame.setVisible(true);
         //frame.show();
     }
     
-    /**
-     * Ends the application or applet.
-     */
-    @Override
+    
     public void destroy() {
         
         if (frame != null) {
@@ -76,7 +77,6 @@ public class LineChart extends JApplet{
     
     private Chart2D getChart2DDemoI() {
         
-        //<-- Begin Chart2D configuration -->
         
         //Configure object properties
         Object2DProperties object2DProps = new Object2DProperties();
@@ -94,7 +94,8 @@ public class LineChart extends JApplet{
         //Configure graph chart properties
         GraphChart2DProperties graphChart2DProps = new GraphChart2DProperties();
         String[] labelsAxisLabels =
-        {"9 am", "10 am", "11 am", "12 pm", "1 pm", "2 pm", "3 pm", "4pm", "5 pm", "6 pm"};
+        {"9:30 am", "10:30 am", "11:30 am", "12:30 pm", "1:30 pm", 
+            "2:30 pm", "3:30 pm", "4:30 pm", "5:30 pm"};
         graphChart2DProps.setLabelsAxisLabelsTexts (labelsAxisLabels);
         graphChart2DProps.setLabelsAxisTitleText ("Time of the Day");
         graphChart2DProps.setNumbersAxisTitleText ("Price");
@@ -104,27 +105,18 @@ public class LineChart extends JApplet{
         GraphProperties graphProps = new GraphProperties();
         graphProps.setGraphBarsExistence (false);
         graphProps.setGraphLinesExistence (true);
+        graphProps.setGraphLinesThicknessModel(1);
+
         graphProps.setGraphAllowComponentAlignment (true);
         graphProps.setGraphLinesWithinCategoryOverlapRatio (1f);
         
-        //Configure dataset
-        Random random = new Random();
-        Dataset dataset = new Dataset (3, 10, 4);
-        for (int i = 0; i < dataset.getNumSets(); ++i) {
-            for (int j = 0; j < dataset.getNumCats(); ++j) {
-                for (int k = 0; k < dataset.getNumItems(); ++k) {
-                    int increaseMetric = dataset.getNumSets() - i - 1;
-                    dataset.set (i, j, k,
-                            (increaseMetric + 1) * random.nextInt (5) + (increaseMetric + 1) * 30 + j * 3);
-                }
-            }
-        }
-        
+        dataset = new Dataset(3,9,3600);
+  
         //Configure graph component colors
         MultiColorsProperties multiColorsProps = new MultiColorsProperties();
         
         //Configure chart
-        LBChart2D chart2D = new LBChart2D();
+        chart2D = new LBChart2D();
         chart2D.setObject2DProperties (object2DProps);
         chart2D.setChart2DProperties (chart2DProps);
         chart2D.setLegendProperties (legendProps);
@@ -132,14 +124,40 @@ public class LineChart extends JApplet{
         chart2D.addGraphProperties (graphProps);
         chart2D.addMultiColorsProperties (multiColorsProps);
         chart2D.addDataset (dataset);
+       
         
         //Optional validation:  Prints debug messages if invalid only.
         if (!chart2D.validate (false)) {
             chart2D.validate (true);
+        }        
+        return chart2D;
+    }
+    
+    private void setChart2D() {
+        
+    }
+    
+    public void update(int type, int time, int prices) {
+        int hour = (time - 1) / 3600;
+        int second = time - hour * 3600 - 1;
+        dataset.set (type, hour, second, prices);
+        chart2D.addDataset (dataset);
+        
+
+    }
+
+    @Override
+    public void run() {
+        init();
+        start();
+        while (currentTime < Prices.TOTAL_TIME - 1) {
+            if (currentTime >= prices.getCurrentTime()) {
+                continue;
+            }
+            currentTime++;
+            update(0, currentTime, prices.getPrice(currentTime));
+            frame.repaint();
         }
         
-        //<-- End Chart2D configuration -->
-        
-        return chart2D;
     }
 }
