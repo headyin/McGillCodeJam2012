@@ -17,7 +17,6 @@ import net.sourceforge.chart2d.*;
  * @author headyin
  */
 public class LineChart implements Runnable{
-     private JFrame frame = null;
      private static boolean isApplet = true;
      private Dataset dataset;
      LBChart2D chart2D;
@@ -27,57 +26,28 @@ public class LineChart implements Runnable{
      public LineChart(Prices prices) {
          this.prices = prices;
          this.currentTime = 0;
+         init();
      }
      
-    public void init() {
-        
-        int maxWidth = 600;
-        int maxHeight = 400;
-        
-        
+     public Chart2D getChart2D() {
+         return this.chart2D;
+     }
+     
+    public final void init() {        
+        int maxWidth = 32500;
+        int maxHeight = 280;        
         Dimension maxSize = new Dimension (maxWidth, maxHeight);
-        System.out.println (maxSize);
         
         getChart2DDemoI();
         chart2D.setSize(maxSize);
         chart2D.setPreferredSize(maxSize);
-        
-        frame = new JFrame();
-        frame.getContentPane().add(chart2D);
-        frame.setTitle ("LBChart2DFrameDemo");
-        frame.addWindowListener (
-                new WindowAdapter() {
-                    @Override
-                    public void windowClosing (WindowEvent e) {
-                        destroy();
-                    } } );
-        frame.pack();
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation (
-                (screenSize.width - frame.getSize().width) / 2,
-                (screenSize.height - frame.getSize().height) / 2);
+        chart2D.pack();
     }
     
     
-    public void start() {
-        frame.setVisible(true);
-        //frame.show();
-    }
-    
-    
-    public void destroy() {
-        
-        if (frame != null) {
-            frame.dispose();
-        }
-        if (!isApplet) {
-            System.exit (0);
-        }
-    }
     
     private Chart2D getChart2DDemoI() {
-        
-        
+
         //Configure object properties
         Object2DProperties object2DProps = new Object2DProperties();
         object2DProps.setObjectTitleText ("Weekly LOC Programmed");
@@ -106,7 +76,7 @@ public class LineChart implements Runnable{
         graphProps.setGraphBarsExistence (false);
         graphProps.setGraphLinesExistence (true);
         graphProps.setGraphLinesThicknessModel(1);
-
+        graphProps.setGraphNumbersLinesThicknessModel(1);
         graphProps.setGraphAllowComponentAlignment (true);
         graphProps.setGraphLinesWithinCategoryOverlapRatio (1f);
         
@@ -124,8 +94,7 @@ public class LineChart implements Runnable{
         chart2D.addGraphProperties (graphProps);
         chart2D.addMultiColorsProperties (multiColorsProps);
         chart2D.addDataset (dataset);
-       
-        
+
         //Optional validation:  Prints debug messages if invalid only.
         if (!chart2D.validate (false)) {
             chart2D.validate (true);
@@ -133,30 +102,22 @@ public class LineChart implements Runnable{
         return chart2D;
     }
     
-    private void setChart2D() {
-        
-    }
     
-    public void update(int type, int time, int prices) {
+    public void update(int type, int time, float prices) {
         int hour = (time - 1) / 3600;
         int second = time - hour * 3600 - 1;
         dataset.set (type, hour, second, prices);
         chart2D.addDataset (dataset);
-        
-
     }
 
     @Override
     public void run() {
-        init();
-        start();
         while (currentTime < Prices.TOTAL_TIME - 1) {
             if (currentTime >= prices.getCurrentTime()) {
                 continue;
             }
             currentTime++;
-            update(0, currentTime, prices.getPrice(currentTime));
-            frame.repaint();
+            update(0, currentTime, prices.getPrice(currentTime)/ 1000.0f);
         }
         
     }
