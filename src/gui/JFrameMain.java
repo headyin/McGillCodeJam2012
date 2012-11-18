@@ -11,6 +11,8 @@ import data.handler.EMAHandler;
 import data.handler.LWMAHandler;
 import data.handler.PriceHandler;
 import data.handler.SMAandTMAHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -43,6 +45,7 @@ public class JFrameMain extends javax.swing.JFrame {
     Thread tLineChartTMA;
     Thread tLineChartEMA;
     Thread tLineChartLWMA;
+    boolean psma,plwma,ptma,pema;
     
     /**
      * Creates new form JFrameMain
@@ -50,7 +53,14 @@ public class JFrameMain extends javax.swing.JFrame {
     public JFrameMain() {
         initComponents();
         setLocationRelativeTo(null);
+        this.jButtonReport.setEnabled(false);
+        psma = false;
+        ptma= false;
+        plwma = false;
+        pema = false;
+
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -69,15 +79,24 @@ public class JFrameMain extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         Start = new javax.swing.JButton();
         jButtonReport = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+        jCheckBox3 = new javax.swing.JCheckBox();
+        jCheckBox4 = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Please setup server information");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(640, 480));
+        setPreferredSize(new java.awt.Dimension(550, 440));
         setResizable(false);
 
-        jTextFieldServerName.setText("192.168.2.20");
+        jTextFieldServerName.setText("localhost");
+        jTextFieldServerName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldServerNameActionPerformed(evt);
+            }
+        });
 
         jTextFieldPricePort.setText("4000");
 
@@ -107,25 +126,64 @@ public class JFrameMain extends javax.swing.JFrame {
             }
         });
 
+        jCheckBox1.setText("Plot  SMA");
+        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox1ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox2.setText("Plot LWMA");
+        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox2ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox3.setText("Plot  EMA");
+        jCheckBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox3ActionPerformed(evt);
+            }
+        });
+
+        jCheckBox4.setText("Plot TMA");
+        jCheckBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldServerName, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                    .addComponent(jTextFieldPricePort, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTradePort))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(Start, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                    .addComponent(jButtonReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(52, 52, 52))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldServerName, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                            .addComponent(jTextFieldPricePort, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                            .addComponent(jTextFieldTradePort))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Start, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jCheckBox1)
+                        .addGap(10, 10, 10)
+                        .addComponent(jCheckBox2)
+                        .addGap(10, 10, 10)
+                        .addComponent(jCheckBox3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBox4)))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,7 +203,13 @@ public class JFrameMain extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
                             .addComponent(jTextFieldTradePort))
-                        .addGap(166, 166, 166))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBox1)
+                            .addComponent(jCheckBox2)
+                            .addComponent(jCheckBox3)
+                            .addComponent(jCheckBox4))
+                        .addGap(124, 124, 124))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -189,10 +253,15 @@ public class JFrameMain extends javax.swing.JFrame {
         this.tSTHandler.start();
         this.tPriceHandler.start();
         
-         //this.tLineChartSMA.start();
-        //this.tLineChartEMA.start();
-       // this.tLineChartLWMA.start();
-       // this.tLineChartTMA.start();
+        try {
+            this.tEmaHandler.join();
+            this.tSTHandler.join();
+            this.tLwmaHandler.join();
+            this.tPriceHandler.join(); 
+        } catch (InterruptedException ex) {
+            //Logger.getLogger(JFrameMain.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.jButtonReport.setEnabled(true);
         
     }//GEN-LAST:event_StartActionPerformed
 
@@ -202,8 +271,74 @@ public class JFrameMain extends javax.swing.JFrame {
         this.transactions.addTransactions(this.EMAtransactionCollector);
         this.transactions.addTransactions(this.LWMAtransactionCollector);
         this.transactions.saveToFile();
+        System.out.println(this.transactions.postToServer());
     }//GEN-LAST:event_jButtonReportActionPerformed
 
+    private void jTextFieldServerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldServerNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldServerNameActionPerformed
+
+    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
+        // TODO add your handling code here:
+        psma = !psma;
+        if (!numberTrueCheck()) {
+            this.jCheckBox1.setSelected(false);
+            psma = !psma;
+        }
+       // System.out.println(psma);
+    }//GEN-LAST:event_jCheckBox1ActionPerformed
+
+    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+        // TODO add your handling code here:
+         plwma = !plwma;
+        if (!numberTrueCheck()) {
+            this.jCheckBox2.setSelected(false);
+            plwma = !plwma;
+        }
+       // System.out.println(plwma);
+    }//GEN-LAST:event_jCheckBox2ActionPerformed
+
+    private void jCheckBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox3ActionPerformed
+        // TODO add your handling code here:
+        pema = !pema;
+        if (!numberTrueCheck()) {
+            this.jCheckBox3.setSelected(false);
+            pema = !pema;
+        }
+        //System.out.println(pema);
+    }//GEN-LAST:event_jCheckBox3ActionPerformed
+
+    private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
+        // TODO add your handling code here:
+         ptma = !ptma;
+        if (!numberTrueCheck()) {
+            this.jCheckBox4.setSelected(false);
+            ptma = !ptma;
+        }
+        //System.out.println(ptma);
+    }//GEN-LAST:event_jCheckBox4ActionPerformed
+
+    private boolean numberTrueCheck() {
+        int i = 0;
+        if (psma) {
+            i++;
+        }
+        if (ptma) {
+            i++;
+        }
+        if (plwma) {
+            i++;
+        }
+        if (pema) {
+            i++;
+        }
+        if (i > 2) {
+            return false;
+        }else {
+            return true;
+        }
+        
+    }
     /**
      * @param args the command line arguments
      */
@@ -242,6 +377,10 @@ public class JFrameMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Start;
     private javax.swing.JButton jButtonReport;
+    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JCheckBox jCheckBox3;
+    private javax.swing.JCheckBox jCheckBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

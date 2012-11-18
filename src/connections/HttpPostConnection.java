@@ -21,7 +21,7 @@ public class HttpPostConnection {
     private static final String URL_ADDRESS = 
             "https://stage-api.e-signlive.com/aws/rest/services/codejam";
     private static final String Authorization = 
-            "Y29kZWphbTpBRkxpdGw0TEEyQWQx";
+            "Basic Y29kZWphbTpBRkxpdGw0TEEyQWQx";
     
     private URL url;
     private HttpURLConnection connection;
@@ -39,10 +39,12 @@ public class HttpPostConnection {
             this.connection = (HttpURLConnection) this.url.openConnection();
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setRequestProperty("Authorization", 
-                    "Basic" + Authorization);
-            connection.connect();            
+            connection.setDoInput(true);            
+            connection.setRequestProperty("Authorization", Authorization);
+            //connection.setRequestProperty("Content-Type", "application/json");
+
+            //System.out.println(connection.getContentEncoding());
+            //connection.connect();            
             this.outputStreamWriter = new 
                     OutputStreamWriter(connection.getOutputStream());
             this.inputStreamReader = new
@@ -52,7 +54,7 @@ public class HttpPostConnection {
             this.bufferedWriter = new
                     BufferedWriter(this.outputStreamWriter);           
         } catch (IOException e){
-            
+            System.out.println(e);
         }  
     }
     

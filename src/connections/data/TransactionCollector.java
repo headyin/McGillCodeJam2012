@@ -5,9 +5,14 @@
 package connections.data;
 
 import connections.FileConnection;
+import connections.HttpPostConnection;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +23,7 @@ public class TransactionCollector {
     
     public ArrayList<Transaction> transactionQueue;
     FileConnection fileConnection;
+    HttpPostConnection httpPostConnection;
     
     public TransactionCollector() {
         transactionQueue = new ArrayList<>();
@@ -53,11 +59,35 @@ public class TransactionCollector {
     
     public void saveToFile() {
         this.fileConnection = new FileConnection();
-        this.writeOutTransactions(this.fileConnection.getBufferedWriter());
-        
+        this.writeOutTransactions(new URLEncodedBufferedWriter(
+                this.fileConnection.getBufferedWriter()));
+        try {
+            this.fileConnection.getBufferedWriter().close();
+        } catch (IOException ex) {
+            //Logger.getLogger(TransactionCollector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.fileConnection.closeFile();
     }
     
-    private void writeOutTransactions(BufferedWriter bw) {
+    public String postToServer() {
+        this.httpPostConnection = new HttpPostConnection();
+        this.writeOutTransactions(new URLEncodedBufferedWriter(
+                this.httpPostConnection.getBufferedWriter()));
+        BufferedReader br = this.httpPostConnection.getBufferedReader();
+        String respone = null;
+        try {
+            respone = br.readLine();
+            br.close();
+            this.httpPostConnection.getBufferedWriter().close();
+        } catch (IOException ex) {
+//            Logger.getLogger(TransactionCollector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        this.httpPostConnection.disconnect();
+        return respone;
+    }
+    
+    private void writeOutTransactions(URLEncodedBufferedWriter bw) {
         try {
             bw.write("{\n");
             bw.write("  \"team\" : " + "\"QDOIer\",\n");
@@ -83,7 +113,6 @@ public class TransactionCollector {
             bw.write("  ]\n");
             bw.write("}\n");
             bw.flush();
-            bw.close();            
         } catch (IOException e) {
             
         }
