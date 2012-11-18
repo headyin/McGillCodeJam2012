@@ -32,7 +32,7 @@ public class JFrameMain extends javax.swing.JFrame {
     String serverName;
     int pricePort;
     int tradePort;
-    LineChart lineChartSMA;
+    JFrameLineChart lineChartSMA;
     Thread tLineChartSMA;
     /**
      * Creates new form JFrameMain
@@ -148,7 +148,7 @@ public class JFrameMain extends javax.swing.JFrame {
         tSTHandler = new Thread(STHandler);
         tEmaHandler = new Thread(emaHandler);
         tLwmaHandler = new Thread(lwmaHandler);
-        lineChartSMA = new LineChart(prices);
+        lineChartSMA = new JFrameLineChart(prices);
         tLineChartSMA = new Thread(lineChartSMA);
         
         this.tEmaHandler.start();

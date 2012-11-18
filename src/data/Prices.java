@@ -47,7 +47,10 @@ public class Prices {
     }
     
     public int getPrice(int time) {
-        return this.prices[time];
+        synchronized(this) {
+            return this.prices[time];
+        } 
+        
     }
     
     public int getCurrentPrice() {
