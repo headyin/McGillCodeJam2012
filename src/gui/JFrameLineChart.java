@@ -4,7 +4,9 @@
  */
 package gui;
 
+import data.MovingAverage;
 import data.Prices;
+import java.awt.Color;
 import java.awt.Dimension;
 import net.sourceforge.chart2d.Chart2D;
 import net.sourceforge.chart2d.Chart2DProperties;
@@ -22,28 +24,32 @@ import net.sourceforge.chart2d.Object2DProperties;
  */
 public class JFrameLineChart extends javax.swing.JFrame implements Runnable{
     
+    String[] legendLabels;
+    String titleString;
+    
     protected Dataset dataset;
     protected LBChart2D chart2D;
     protected int currentTime;
     protected Prices prices;
+    protected MovingAverage ma;
 
     /**
      * Creates new form JFrameLineChart
      */
-    public JFrameLineChart(Prices prices) {
+    /*public JFrameLineChart(Prices prices) {
         this.prices = prices;
         initComponents();
-    }
+    }*/
     
     public void JFrameLineChartInit(Prices prices) {
         this.prices = prices;
         initComponents();
     }
     public void init() {
-        int maxWidth = 32500;
-        int maxHeight = 250;       
+        int maxWidth = 32400;
+        int maxHeight = 550;
         Dimension maxSize = new Dimension (maxWidth, maxHeight);
-        
+        this.jLabel1.setPreferredSize(maxSize);
         getChart2DDemoI();
         chart2D.setSize(maxSize);
         chart2D.setPreferredSize(maxSize);
@@ -57,7 +63,7 @@ public class JFrameLineChart extends javax.swing.JFrame implements Runnable{
 
         //Configure object properties
         Object2DProperties object2DProps = new Object2DProperties();
-        object2DProps.setObjectTitleText ("Weekly LOC Programmed");
+        object2DProps.setObjectTitleText (titleString);
         
         //Configure chart properties
         Chart2DProperties chart2DProps = new Chart2DProperties();
@@ -65,7 +71,7 @@ public class JFrameLineChart extends javax.swing.JFrame implements Runnable{
         
         //Configure legend properties
         LegendProperties legendProps = new LegendProperties();
-        String[] legendLabels = {"Price", "SMA[5]", "SMA[20]"};
+        
         legendProps.setLegendLabelsTexts (legendLabels);
         
         //Configure graph chart properties
@@ -91,6 +97,9 @@ public class JFrameLineChart extends javax.swing.JFrame implements Runnable{
   
         //Configure graph component colors
         MultiColorsProperties multiColorsProps = new MultiColorsProperties();
+        multiColorsProps.setColorsCustomize(true);
+        Color[] colors = new Color[] {Color.black,Color.red,Color.blue};
+        multiColorsProps.setColorsCustom(colors);
         
         //Configure chart
         chart2D = new LBChart2D();
@@ -124,8 +133,18 @@ public class JFrameLineChart extends javax.swing.JFrame implements Runnable{
             if (currentTime >= prices.getCurrentTime()) {
                 continue;
             }
+            if (currentTime >= ma.getCurrentTime()) {
+                continue;
+            }
             currentTime++;
-            update(0, currentTime, prices.getPrice(currentTime)/ 1000.0f);
+            int price = prices.getPrice(currentTime);
+            int price5 = ma.getFastMA(currentTime);            
+            int price20 = ma.getSlowMA(currentTime);
+            
+            update(0, currentTime, price/1000f);
+            update(1, currentTime, price5/1000f);
+            update(2, currentTime, price20/1000f);
+            this.repaint();
         }
         
     }
@@ -143,10 +162,9 @@ public class JFrameLineChart extends javax.swing.JFrame implements Runnable{
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(500, 300));
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(800, 300));
 
-        jLabel1.setPreferredSize(new java.awt.Dimension(32500, 250));
+        jLabel1.setPreferredSize(new java.awt.Dimension(8100, 550));
         jScrollPane1.setViewportView(jLabel1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

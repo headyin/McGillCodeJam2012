@@ -27,6 +27,14 @@ public class SMAandTMAHandler extends StrategyHandler {
         this.tma = new TMA(prices,sma);
     }
     
+    public SMA getSMA() {
+        return this.sma;
+    }
+    
+    public TMA getTMA() {
+        return this.tma;
+    }
+    
     @Override
     public void run() {
         this.commandConnection.connect();

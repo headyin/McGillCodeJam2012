@@ -19,7 +19,6 @@ public class EMA extends MovingAverage{
     
     @Override
     public int calcMovingAverage(int time) {
-        this.currentTime = time;
         long[] sumPrice = prices.getSumPrices();
         int price = prices.getPrice(time);
         if (time > 1) {
@@ -31,7 +30,7 @@ public class EMA extends MovingAverage{
             maFast[time] = price;
             maSlow[time] = price;
         }
-        
+        this.currentTime = time;
         return isCrossOver();
     }
     

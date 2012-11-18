@@ -32,8 +32,15 @@ public class JFrameMain extends javax.swing.JFrame {
     String serverName;
     int pricePort;
     int tradePort;
-    JFrameLineChart lineChartSMA;
+    LineChartSMA lineChartSMA;
+    LineChartTMA lineChartTMA;
+    LineChartEMA lineChartEMA;
+    LineChartLWMA lineChartLWMA;
     Thread tLineChartSMA;
+    Thread tLineChartTMA;
+    Thread tLineChartEMA;
+    Thread tLineChartLWMA;
+    
     /**
      * Creates new form JFrameMain
      */
@@ -82,7 +89,7 @@ public class JFrameMain extends javax.swing.JFrame {
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Trade/Booking Port:");
 
-        Start.setText("Save");
+        Start.setText("Start");
         Start.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 StartActionPerformed(evt);
@@ -148,14 +155,24 @@ public class JFrameMain extends javax.swing.JFrame {
         tSTHandler = new Thread(STHandler);
         tEmaHandler = new Thread(emaHandler);
         tLwmaHandler = new Thread(lwmaHandler);
-        lineChartSMA = new JFrameLineChart(prices);
+        lineChartSMA = new LineChartSMA(prices, STHandler.getSMA());
         tLineChartSMA = new Thread(lineChartSMA);
+        lineChartEMA = new LineChartEMA(prices, emaHandler.getEMA());
+        tLineChartEMA = new Thread(lineChartEMA);
+        lineChartTMA = new LineChartTMA(prices, STHandler.getTMA());
+        tLineChartTMA = new Thread(lineChartTMA);
+        lineChartLWMA = new LineChartLWMA(prices, lwmaHandler.getLWMA());
+        tLineChartLWMA = new Thread(lineChartLWMA);
         
         this.tEmaHandler.start();
         this.tLwmaHandler.start();
         this.tSTHandler.start();
         this.tLineChartSMA.start();
+        this.tLineChartEMA.start();
+        this.tLineChartLWMA.start();
+        this.tLineChartTMA.start();
         this.tPriceHandler.start();
+        
     }//GEN-LAST:event_StartActionPerformed
 
     /**

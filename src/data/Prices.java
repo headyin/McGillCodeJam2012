@@ -28,9 +28,10 @@ public class Prices {
     }
     
     public void addPrice(int time, int price) {
-        this.currentTime = time;
+       
         this.prices[time] = price;
         sumPrice[time] = sumPrice[time - 1] + price;
+         this.currentTime = time;
     }
 
     
@@ -47,9 +48,9 @@ public class Prices {
     }
     
     public int getPrice(int time) {
-        synchronized(this) {
-            return this.prices[time];
-        } 
+
+        return this.prices[time];
+
         
     }
     

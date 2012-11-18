@@ -24,6 +24,10 @@ public class LWMAHandler extends StrategyHandler{
         this.lwma = new LWMA(prices);        
      }
     
+    public LWMA getLWMA() {
+        return this.lwma;
+    }
+    
      @Override
     public void run() {
         this.commandConnection.connect();

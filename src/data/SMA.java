@@ -21,7 +21,6 @@ public class SMA extends MovingAverage{
 
     @Override
     public int calcMovingAverage(int time) {
-        this.currentTime = time;
         long[] sumPrice = prices.getSumPrices();
         int price = prices.getPrice(time);
         
@@ -43,6 +42,7 @@ public class SMA extends MovingAverage{
         //printForDebug(time, price, smaFast[time], smaSlow[time]);
         smaFastSum[time] = smaFastSum[time - 1] + maFast[time];
         smaSlowSum[time] = smaSlowSum[time - 1] + maSlow[time];
+        this.currentTime = time;
         return isCrossOver();
     }
     

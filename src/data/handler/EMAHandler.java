@@ -22,6 +22,10 @@ public class EMAHandler extends StrategyHandler{
         this.ema = new EMA(prices);        
      }
      
+     public EMA getEMA() {
+         return this.ema;
+     }
+     
       @Override
     public void run() {
         this.commandConnection.connect();
