@@ -167,11 +167,12 @@ public class JFrameMain extends javax.swing.JFrame {
         this.tEmaHandler.start();
         this.tLwmaHandler.start();
         this.tSTHandler.start();
-        this.tLineChartSMA.start();
-        this.tLineChartEMA.start();
-        this.tLineChartLWMA.start();
-        this.tLineChartTMA.start();
         this.tPriceHandler.start();
+        
+         //this.tLineChartSMA.start();
+        //this.tLineChartEMA.start();
+       // this.tLineChartLWMA.start();
+       // this.tLineChartTMA.start();
         
     }//GEN-LAST:event_StartActionPerformed
 

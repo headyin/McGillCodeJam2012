@@ -37,6 +37,7 @@ public class EMAHandler extends StrategyHandler{
             currentTime++;
             sendCommand(ema.calcMovingAverage(currentTime),2,ema.getCurrentTime());
         }
+        this.commandConnection.close();
         //System.out.println("EMA Handler thread ends");
         
     }

@@ -48,6 +48,7 @@ public class SMAandTMAHandler extends StrategyHandler {
             sendCommand(tma.calcMovingAverage(currentTime),3,tma.getCurrentTime());
             //System.out.println("Time>> " + currentTime);
         }
+        this.commandConnection.close();
         //System.out.println("ST handler ends.");
         
     }

@@ -15,13 +15,13 @@ public class Transaction {
     private int time;
     private int price;
     private int type;
-    private int manage;
+    private int manager;
     
     public Transaction(int time, int type, int price, int manager, int strategy) {
         this.time = time;
         this.type = type;
         this.price = price;
-        this.manage = manager;
+        this.manager = manager;
         this.strategy = strategy;
     }
     
@@ -37,8 +37,8 @@ public class Transaction {
         return this.price;
     }
     
-    public int getManager() {
-        return this.manage;
+    public String getManager() {
+        return "Mamager" + this.manager;
     }
     
     public String getStrategy() {

@@ -39,6 +39,7 @@ public class LWMAHandler extends StrategyHandler{
             currentTime++;
             sendCommand(lwma.calcMovingAverage(currentTime),1,lwma.getCurrentTime());
         }
+        this.commandConnection.close();
         //System.out.println("LWMA Handler thread ends");
 
     }

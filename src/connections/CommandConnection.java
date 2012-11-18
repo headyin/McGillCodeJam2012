@@ -33,6 +33,14 @@ public class CommandConnection {
         
     }
     
+    public void close() {
+        try {
+            serverSocket.close();
+        } catch (IOException socketClose) {
+            
+        }
+    }
+    
     public boolean connect() {
         try {
             serverSocket = new Socket(serverAddress, serverPricePort);
