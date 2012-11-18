@@ -21,7 +21,7 @@ public class McGillCodeJam2012 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void run(String[] args) {
 
         PriceConnection priceConnection = new PriceConnection("localhost", 4000);
         Prices prices = new Prices();

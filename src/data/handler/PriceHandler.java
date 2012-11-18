@@ -41,7 +41,7 @@ public class PriceHandler implements Runnable {
             prices.addPrice(currentTime, priceValue);            
             priceValue = priceConnection.receivePrice();
         }
-        System.out.println("Price Handler thread ends.");
+        //System.out.println("Price Handler thread ends.");
 
     }
 
