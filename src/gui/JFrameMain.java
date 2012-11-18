@@ -253,6 +253,19 @@ public class JFrameMain extends javax.swing.JFrame {
         this.tSTHandler.start();
         this.tPriceHandler.start();
         
+        if (psma) {
+            this.tLineChartSMA.start();
+        }
+        if (plwma) {
+            this.tLineChartLWMA.start();
+        }
+        if (pema) {
+            this.tLineChartEMA.start();
+        }
+        if (ptma) {
+            this.tLineChartTMA.start();
+        }
+        
         try {
             this.tEmaHandler.join();
             this.tSTHandler.join();
