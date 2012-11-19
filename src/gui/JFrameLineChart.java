@@ -47,7 +47,7 @@ public class JFrameLineChart extends javax.swing.JFrame implements Runnable{
     }
     public void init() {
         int maxWidth = 32400;
-        int maxHeight = 550;
+        int maxHeight = 350;
         Dimension maxSize = new Dimension (maxWidth, maxHeight);
         this.jLabel1.setPreferredSize(maxSize);
         getChart2DDemoI();

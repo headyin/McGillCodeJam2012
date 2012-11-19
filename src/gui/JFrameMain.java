@@ -11,8 +11,12 @@ import data.handler.EMAHandler;
 import data.handler.LWMAHandler;
 import data.handler.PriceHandler;
 import data.handler.SMAandTMAHandler;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 
 /**
  *
@@ -50,7 +54,7 @@ public class JFrameMain extends javax.swing.JFrame {
     /**
      * Creates new form JFrameMain
      */
-    public JFrameMain() {
+    public JFrameMain() throws IOException {
         initComponents();
         setLocationRelativeTo(null);
         this.jButtonReport.setEnabled(false);
@@ -60,7 +64,7 @@ public class JFrameMain extends javax.swing.JFrame {
         pema = false;
 
     }
-    
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -71,6 +75,8 @@ public class JFrameMain extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jTextFieldServerName = new javax.swing.JTextField();
         jTextFieldPricePort = new javax.swing.JTextField();
         jTextFieldTradePort = new javax.swing.JTextField();
@@ -84,11 +90,24 @@ public class JFrameMain extends javax.swing.JFrame {
         jCheckBox3 = new javax.swing.JCheckBox();
         jCheckBox4 = new javax.swing.JCheckBox();
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Please setup server information");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(550, 440));
+        setPreferredSize(new java.awt.Dimension(800, 400));
         setResizable(false);
 
         jTextFieldServerName.setText("localhost");
@@ -183,7 +202,7 @@ public class JFrameMain extends javax.swing.JFrame {
                         .addComponent(jCheckBox3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jCheckBox4)))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,6 +214,7 @@ public class JFrameMain extends javax.swing.JFrame {
                     .addComponent(Start, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -208,11 +228,8 @@ public class JFrameMain extends javax.swing.JFrame {
                             .addComponent(jCheckBox1)
                             .addComponent(jCheckBox2)
                             .addComponent(jCheckBox3)
-                            .addComponent(jCheckBox4))
-                        .addGap(124, 124, 124))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonReport, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jCheckBox4))))
+                .addGap(52, 52, 52))
         );
 
         pack();
@@ -266,14 +283,14 @@ public class JFrameMain extends javax.swing.JFrame {
             this.tLineChartTMA.start();
         }
         
-        try {
+        /*try {
             this.tEmaHandler.join();
             this.tSTHandler.join();
             this.tLwmaHandler.join();
             this.tPriceHandler.join(); 
         } catch (InterruptedException ex) {
             //Logger.getLogger(JFrameMain.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
         this.jButtonReport.setEnabled(true);
         
     }//GEN-LAST:event_StartActionPerformed
@@ -383,7 +400,11 @@ public class JFrameMain extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new JFrameMain().setVisible(true);
+                try {
+                    new JFrameMain().setVisible(true);
+                } catch (IOException ex) {
+                    //Logger.getLogger(JFrameMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -397,6 +418,8 @@ public class JFrameMain extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextFieldPricePort;
     private javax.swing.JTextField jTextFieldServerName;
     private javax.swing.JTextField jTextFieldTradePort;
