@@ -107,7 +107,7 @@ public class JFrameMain extends javax.swing.JFrame {
         setTitle("Please setup server information");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setLocationByPlatform(true);
-        setPreferredSize(new java.awt.Dimension(800, 400));
+        setPreferredSize(new java.awt.Dimension(500, 400));
         setResizable(false);
 
         jTextFieldServerName.setText("localhost");
@@ -283,14 +283,14 @@ public class JFrameMain extends javax.swing.JFrame {
             this.tLineChartTMA.start();
         }
         
-        /*try {
-            this.tEmaHandler.join();
+        try {
+            //this.tEmaHandler.join();
             this.tSTHandler.join();
-            this.tLwmaHandler.join();
-            this.tPriceHandler.join(); 
+            //this.tLwmaHandler.join();
+           // this.tPriceHandler.join(); 
         } catch (InterruptedException ex) {
             //Logger.getLogger(JFrameMain.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
         this.jButtonReport.setEnabled(true);
         
     }//GEN-LAST:event_StartActionPerformed
