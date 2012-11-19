@@ -308,8 +308,9 @@ public class JFrameMain extends javax.swing.JFrame {
         this.transactions.addTransactions(this.EMAtransactionCollector);
         this.transactions.addTransactions(this.LWMAtransactionCollector);
         this.transactions.saveToFile();
-        System.out.println(this.transactions.postToServer());
         this.jLabel4.setText("Json file saved at local folder!");
+        System.out.println(this.transactions.postToServer());
+        
     }//GEN-LAST:event_jButtonReportActionPerformed
 
     private void jTextFieldServerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldServerNameActionPerformed
